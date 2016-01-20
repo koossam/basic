@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title></title>
+</head>
+<body onload="change_animated_pictures()">
+
+<table id="slide" align="center" border=0 cellpadding=0 cellspacing=0 width=340 height=240>
+<tr>
+  <Td align=left><input type=button value="<" onclick="left_click(slide.style.backgroundImage)"></Td>
+  <Td align=right><input type=button value=">" onclick="right_click(slide.style.backgroundImage)"></td>
+ </tr>
+</table>
+<br><br><br><br><br><br>
+<table id="slide2" align="center" border=0 cellpadding=0 cellspacing=0 width=340 height=240>
+<tr>
+<td align=left><input type=button value="start" onclick="change_animated_pictures()"></td>
+<td align=right><input type=button value="stop" onclick="stop_animated_pictures()"></td>
+</table>
+
+<script id="script1" type="text/javascript">
+    
+
+    //우선 슬라이드에 사용할 이미지들을 배열에 저장했습니다.
+    var original_images = [
+        'url("http://tpholic.com/xe/files/attach/images/76/090/786/001/F4-1.jpg")',
+        'url("http://tpholic.com/xe/files/attach/images/76/627/809/001/Briancon.jpg")',
+        'url("http://tpholic.com/xe/files/attach/images/76/145/786/001/F4-3.jpg")',
+        'url("http://tpholic.com/xe/files/attach/images/76/037/786/001/F3-1.jpg")',
+        'url("http://tpholic.com/xe/files/attach/images/76/012/786/001/F2-3.jpg")'
+    ];
+
+    //첫 번째 슬라이드에서 오른쪽 화살표를 클릭했을 경우 다음 이미지로 넘어가는 함수입니다.
+    //다음장으로 넘어가다가 마지막장에서는 처음으로 돌아갑니다.
+    function right_click(image) {
+        for (var i=0; i<original_images.length; i++) {
+            if (image === original_images[i]) {
+                if (i === original_images.length -1) {
+                    window.slide.style.backgroundImage = original_images[0];
+                }
+                window.slide.style.backgroundImage = original_images[i+1];
+            }
+        }
+    }
+
+    //두 번째 슬라이드에서 왼쪽 화살표를 클릭했을 경우 이전 이미지로 넘어가는 함수입니다.
+    //이전장으로 넘어가다가 첫번째 장에서는 마지막으로 돌아갑니다.
+    function left_click(image) {
+        for (var i=0; i<original_images.length; i++) {
+            if (image === original_images[i]) {
+                if (i === 0) {
+                    window.slide.style.backgroundImage = original_images[original_images.length-1];
+                }
+                window.slide.style.backgroundImage = original_images[i-1];
+            }
+        }
+    }
+
+    //왼쪽 화살표와 오른쪽 화살표를 클릭했을 때 위의 Click 함수들이 실행되도록 만들었습니다.
+    function keyDown() {
+        var keycode = event.keyCode
+        if (keycode === 37) {   // 왼쪽 화살표 코드는 37입니다.
+            left_click(slide.style.backgroundImage);
+        } else if (keycode === 39) {    // 오른쪽 화살표 코드는 39입니다.
+            right_click(slide.style.backgroundImage);
+        } else {
+            alert("If you want to change the picture, input the left arrow key or right arrow key!!!!");
+        }
+        alert("keycode: " + keycode + "\nrealkey: " + realkey)
+    }
+    
+    //두 번째 슬라이드에 애니메이션 효과를 넣기 위한 함수입니다. right_click() 함수와 동일합니다.
+    function animated_pictures(image) {
+        for (var i=0; i<original_images.length;i++) {
+            if(image === original_images[i]) {
+                if (i === original_images.length -1) {
+                    window.slide2.style.backgroundImage = original_images[0];
+                }
+                window.slide2.style.backgroundImage = original_images[i+1];
+            }
+        }
+    }
+
+    //위의 animated_pictures 함수가 1초의 간격을 두고 계속 실행하기 위한 함수입니다.
+    function change_animated_pictures() {
+        interval_image = setInterval(function(){animated_pictures(slide2.style.backgroundImage);}, 1000);
+    }
+
+    //애니메이션이 멈추기 위한 함수입니다. 
+    function stop_animated_pictures() {
+        clearInterval(interval_image);
+    }
+
+
+    //키보드 이벤트를 발생시킵니다
+    document.onkeydown = keyDown
+
+    //첫번째 슬라이드 테이블의 배경화면과 크기를 명시합니다.
+    slide.style.backgroundImage = original_images[0];
+    slide.style.backgroundSize = "340px 240px";
+    //두번째 슬라이드 테이블의 배경화면과 크기를 명시합니다.
+    slide2.style.backgroundImage = original_images[0];
+    slide2.style.backgroundSize = "340px 240px";
+</script>
+
+
+
+</script>
+</body>
+</html>
